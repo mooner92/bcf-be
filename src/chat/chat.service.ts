@@ -35,5 +35,5 @@ export class ChatService {
     return data;
   }
 
-  // 추가로 채팅방 목록, 유저 정보 등도 관리 가능
+  // 추가로 채팅방 목록, 유저 정보 등도 관리 가능//
 }
