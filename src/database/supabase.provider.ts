@@ -1,4 +1,3 @@
-// supabase.provider.ts
 import { ConfigService } from '@nestjs/config';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Provider } from '@nestjs/common';
@@ -10,7 +9,7 @@ export const SupabaseProvider: Provider = {
   inject: [ConfigService],
   useFactory: (configService: ConfigService): SupabaseClient => {
     const url = configService.get<string>('SUPABASE_URL');
-    const serviceKey = configService.get<string>('SUPABASE_SERVICE_ROLE_KEY');
-    return createClient(url, serviceKey);
+    const key = configService.get<string>('SUPABASE_SERVICE_ROLE_KEY');
+    return createClient(url, key);
   },
 };

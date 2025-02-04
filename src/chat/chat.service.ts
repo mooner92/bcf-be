@@ -1,19 +1,18 @@
-// chat.service.ts
 import { Injectable, Inject } from '@nestjs/common';
-import { SUPABASE_CLIENT } from 'src/database/supabase.provider';
+import { SUPABASE_CLIENT } from '../database/supabase.provider';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 @Injectable()
 export class ChatService {
   constructor(@Inject(SUPABASE_CLIENT) private readonly supabase: SupabaseClient) {}
 
-  // 메시지 저장
+  // Chats 테이블에 메시지 저장
   async saveMessage(roomId: string, senderId: string, content: string) {
     const { data, error } = await this.supabase
-      .from('messages')
+      .from('Chats')  // 테이블 이름: Chats
       .insert([{ room_id: roomId, sender_id: senderId, content }])
       .select('*')
-      .single(); // 추가된 레코드 1개만 반환
+      .single(); // 새로 추가된 한 건의 레코드를 반환
 
     if (error) {
       throw error;
@@ -21,10 +20,10 @@ export class ChatService {
     return data;
   }
 
-  // 특정 채팅방의 이전 메시지 불러오기
+  // 특정 채팅방(room_id)에 해당하는 메시지 조회 (오름차순 정렬)
   async getMessages(roomId: string) {
     const { data, error } = await this.supabase
-      .from('messages')
+      .from('Chats')
       .select('*')
       .eq('room_id', roomId)
       .order('created_at', { ascending: true });
@@ -34,6 +33,4 @@ export class ChatService {
     }
     return data;
   }
-
-  // 추가로 채팅방 목록, 유저 정보 등도 관리 가능//
 }
